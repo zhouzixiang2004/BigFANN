@@ -1,10 +1,15 @@
 # BigFANN
 
+BigFANN is a C++ framework for filtered approximate nearest neighbor search (FANNS) with label filters. It implements the techniques described in the accompanying paper "**Harmonizing Efficiency and Accuracy in Filtered Vector Search**", including hybrid IVF-graph indexing and join-free multi-filter search.
+
+# Quickstart
+
 First, to build the project, run `make -j` from the `BigFANN` directory.
 
 To generate synthetic labels for and evaluate the `sift1m` dataset, run the following commands:
 
 ```
+# Configure parallelism and build
 export OMP_NUM_THREADS=32
 export PARLAY_NUM_THREADS=32
 make -j
@@ -34,3 +39,11 @@ cd ..
 # Run double-filter queries
 ./bin/run_query sift-double hybrid_32_1 1 2 3 4 5 7 10 15 20 25 30 40 50 70 100
 ```
+
+To evaluate other datasets, adjust the dataset paths and parameters in `build_index.cpp` and `run_query.cpp`.
+
+# Acknowledgements
+
+BigFANN uses OpenMP and parallel primitives from [ParlayLib](https://cmuparlay.github.io/parlaylib/).
+
+Our implementation also builds on ideas and infrastructure from [ParlayIVF²](https://github.com/cmuparlay/ParlayANN/tree/filter).

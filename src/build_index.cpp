@@ -85,6 +85,8 @@ void build_multifilter_index(string data_file, string filters_file,
     }
     cout << "big: " << big.size() << endl;
 
+    Timer tt;
+    tt.Start();
     vector<size_t> indptr;
     indptr.push_back(0);
     vector<vidType> indices;
@@ -96,9 +98,17 @@ void build_multifilter_index(string data_file, string filters_file,
         for (size_t j = i+1; j < big.size(); j++) {
             int num = 0;
             for (auto x: filterst[big[j]]) {
-                if (bits[x >> 6] & (1ULL << (x & 63))) indices.push_back(x),num++;
+                if (bits[x >> 6] & (1ULL << (x & 63))) {
+                    indices.push_back(x),num++;
+                    if (num > P.PRECOMP_CUTOFF) break;
+                }
             }
-            nnz += num;
+            if (num > P.PRECOMP_CUTOFF) {
+                indices.erase(indices.end()-num,indices.end());
+                indices.push_back(-1); // special value denoting "too large"
+                nnz++;
+            }
+            else nnz += num;
             indptr.push_back(nnz);
         }
         for (auto x: filterst[big[i]]) bits[x >> 6] = 0;
@@ -107,7 +117,9 @@ void build_multifilter_index(string data_file, string filters_file,
     filesystem::create_directory(index_folder);
     write_spbitmat((index_folder + "/precomp").c_str(),
         big.size()*(big.size()-1)/2,data.num,nnz,indptr.data(),indices.data());
-    
+    tt.Stop();
+    cout << "precomputed intersections in " << tt.Seconds() << " seconds" << endl;
+
     int done = 0,total = 0;
     for (size_t i = 0; i < big.size(); i++) total += filterst[big[i]].size();
     double total_time = 0;
@@ -144,7 +156,7 @@ void usage(int argc, char *argv[]) {
     fprintf(stderr, "Usage: %s "
             "<dataset> "
             "<folder> "
-            "<single-deg> "
+            "<exclusive-deg> "
             "<shared-deg>\n"
             , argv[0]);
     exit(EXIT_FAILURE);
@@ -165,6 +177,7 @@ int main(int argc, char *argv[]) {
         filters_file = "base.metadata.10M.spmat";
         vector_type = "uint8";
         P.BIG_CUTOFF = 5000;
+        P.PRECOMP_CUTOFF = 2000;
         P.CLUSTER_SIZE = 1000;
         P.BUILD_BEAM_WIDTH = 200;
         P.GRAPH_DEGREE = {{100000,8},{400000,10},{1e7,12}};
@@ -177,7 +190,7 @@ int main(int argc, char *argv[]) {
         vector_type = "float";
         if (dataset_name == "sift") {
             P.BIG_CUTOFF = 0;
-            P.CLUSTER_SIZE = 256;
+            P.CLUSTER_SIZE = 1000;
             P.BUILD_BEAM_WIDTH = 200;
             P.GRAPH_DEGREE = {{1e7,32}};
             P.SHARED_DEGREE = 1;

@@ -5,6 +5,8 @@ using namespace std;
 struct BuildParams {
     bool INNER_PRODUCT = false;
     int BIG_CUTOFF;
+    int BITSET_CUTOFF = 0;
+    int PRECOMP_CUTOFF = 0;
     int CLUSTER_SIZE; // average cluster size
     int BUILD_BEAM_WIDTH;
     vector<pair<int,int> > GRAPH_DEGREE; // degrees for exclusive graphs

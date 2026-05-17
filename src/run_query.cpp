@@ -137,14 +137,16 @@ void run_hybrid_query(vector_dataset<T> &data, string filters_file,
     }
     cout << "loaded graphs" << endl;*/
 
+    int num_bitsets = 0;
     vector<vector<uint64_t> > bitsets(filterst.rows);
     for (size_t i = 0; i < filterst.rows; i++) {
         if (filterst[i].size() > (size_t)P.BITSET_CUTOFF) {
             bitsets[i].resize((data.num+63)/64);
             for (auto v: filterst[i]) bitsets[i][v >> 6] |= (1ULL << (v & 63));
+            num_bitsets++;
         }
     }
-    cout << "finished building bitsets" << endl;
+    cout << "finished building " << num_bitsets << " bitsets" << endl;
     auto contains = [&](int f,vid_t v) -> bool {
         if (filterst[f].size() > (size_t)P.BITSET_CUTOFF)
             return bitsets[f][v >> 6] & (1ULL << (v & 63));
@@ -260,7 +262,8 @@ void run_hybrid_query(vector_dataset<T> &data, string filters_file,
                 if (pos1 > pos2) swap(pos1,pos2);
                 int p = pos_precomp[pos1][pos2];
 
-                if (precomp[p].size() <= (size_t)P.PRECOMP_CUTOFF) {
+                if ((precomp[p].size() <= size_t(P.PRECOMP_CUTOFF)) &&
+                    !((precomp[p].size() == 1) && (precomp[p][0] == vidType(-1)) /*too large*/)) {
                     // precomputed intersection is small
                     getKNN(data,results,x,query_data,precomp.get_begin(p),
                         precomp.get_size(p),P);
@@ -399,7 +402,7 @@ void run_hybrid_query(vector_dataset<T> &data, string filters_file,
                         //distance_timer.Stop();
                         //distance_time += distance_timer.Seconds();
                         this_count_dc++;
-                        //if ((S.size() > K) && (dist > S.get_dist(K)*1.35)) continue;
+                        if ((S.size() > K) && (dist > S.get_dist(K)*1.35)) continue;
                         if ((S.size() < L) || (dist < S.get_tail_dist())) {
                             S.push(v,dist);
                             num_push++;
@@ -554,7 +557,7 @@ int main(int argc, char *argv[]) {
         P.BITSET_CUTOFF = 10000;
         P.PRECOMP_CUTOFF = 2000;
         P.QUERY_BEAM_WIDTH = 85;
-        P.NUM_CLUSTERS = 10;
+        P.NUM_CLUSTERS = 5;
     }
     else if (dataset_name == "yfcc100M-single") {
         dataset_name = "yfcc100M";

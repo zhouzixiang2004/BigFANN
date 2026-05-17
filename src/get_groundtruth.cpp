@@ -70,8 +70,10 @@ void get_groundtruth(string dataset_name,string suff="fbin",string pref="") {
 
     vector<vector<uint64_t> > bitsets(filterst.rows);
     for (size_t i = 0; i < filterst.rows; i++) {
-        bitsets[i].resize((N+63)/64);
-        for (auto v: filterst[i]) bitsets[i][v >> 6] |= (1ULL << (v & 63));
+        if (filterst[i].size() > 10000) {
+            bitsets[i].resize((N+63)/64);
+            for (auto v: filterst[i]) bitsets[i][v >> 6] |= (1ULL << (v & 63));
+        }
     }
 
     vector_dataset<int> results;
@@ -102,9 +104,17 @@ void get_groundtruth(string dataset_name,string suff="fbin",string pref="") {
             for (auto v: filterst[query_filters[x][s]]) {
                 bool bad = false;
                 for (size_t j = 0; j < query_filters[x].size(); j++) {
-                    if ((j != s) && !(bitsets[query_filters[x][j]][v >> 6] & (1ULL << (v & 63)))) {
-                        bad = true;
-                        break;
+                    if (!bitsets[query_filters[x][j]].empty()) {
+                        if ((j != s) && !(bitsets[query_filters[x][j]][v >> 6] & (1ULL << (v & 63)))) {
+                            bad = true;
+                            break;
+                        }
+                    }
+                    else {
+                        if ((j != s) && !filterst[query_filters[x][j]].contains(v)) {
+                            bad = true;
+                            break;
+                        }
                     }
                 }
                 if (!bad) c.push_back(v);

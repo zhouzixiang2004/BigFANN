@@ -46,7 +46,7 @@ CFLAGS += ffast-math -march=native
 
 all: preprocess build_index run_query
 
-preprocess: vec_to_bin bin_to_vec gen_synthetic_filters get_groundtruth
+preprocess: vec_to_bin bin_to_vec gen_synthetic_filters get_groundtruth prepare_nhq convert_arxiv convert_yfcc convert_sift100m
 
 vec_to_bin: vec_to_bin.o
 	g++ -pthread vec_to_bin.cpp -o $(BIN)/vec_to_bin -std=c++17
@@ -66,6 +66,17 @@ build_index: $(OBJS) build_index.o
 run_query: $(OBJS) run_query.o
 	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) run_query.o -o $(BIN)/run_query
 
+prepare_nhq: $(OBJS) prepare_nhq.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) prepare_nhq.o -o $(BIN)/prepare_nhq
+
+convert_arxiv: $(OBJS) convert_arxiv.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) convert_arxiv.o -o $(BIN)/convert_arxiv  
+
+convert_yfcc: $(OBJS) convert_yfcc.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) convert_yfcc.o -o $(BIN)/convert_yfcc 
+
+convert_sift100m: $(OBJS) convert_sift100m.o
+	$(CXX) $(CXXFLAGS) $(INCLUDES) $(OBJS) convert_sift100m.o -o $(BIN)/convert_sift100m
 
 clean:
 	rm *.o

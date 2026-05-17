@@ -118,7 +118,7 @@ void run_hybrid_query(vector_dataset<T> &data, string filters_file,
         }
         else {
             name = to_string(big[i]) + "_postingList_"+to_string(group.size()/10000)+"_"+"5"+".bin";
-            name = DATA_DIR + dataset_name + "/index_cache_32/" + name;
+            name = DATA_DIR + dataset_name + "/index_cache/" + name;
             ivf[i] = new IVF_index<T>(group,name,true,data.dim);
         }
 
@@ -620,6 +620,7 @@ int main(int argc, char *argv[]) {
             vector_type = "uint8";
             query_filters_file = "double_query.metadata.spmat";
             gt_file = "double_GT.ibin";
+            query_type = "double";
             P.BIG_CUTOFF = 0;
             P.BITSET_CUTOFF = 0;
             P.PRECOMP_CUTOFF = 0;
@@ -632,6 +633,8 @@ int main(int argc, char *argv[]) {
             P.PRECOMP_CUTOFF = 0;
             P.QUERY_BEAM_WIDTH = 0;
             P.NUM_CLUSTERS = 0;
+            query_filters_file = "query.metadata.spmat";
+            gt_file = "GT.ibin";
         }
         else if (dataset_name == "paper") {
             P.BIG_CUTOFF = 0;
@@ -639,6 +642,8 @@ int main(int argc, char *argv[]) {
             P.PRECOMP_CUTOFF = 0;
             P.QUERY_BEAM_WIDTH = 0;
             P.NUM_CLUSTERS = 0;
+            query_filters_file = "query.metadata.spmat";
+            gt_file = "GT.ibin";
         }
         else if (dataset_name == "arxiv") {
             P.BIG_CUTOFF = 0;
@@ -646,6 +651,8 @@ int main(int argc, char *argv[]) {
             P.PRECOMP_CUTOFF = 0;
             P.QUERY_BEAM_WIDTH = 0;
             P.NUM_CLUSTERS = 0;
+            query_filters_file = "query.metadata.spmat";
+            gt_file = "GT.ibin";
         }
         else fprintf(stderr,"Unknown dataset"),exit(EXIT_FAILURE);
     }

@@ -17,6 +17,6 @@ bash scripts/prepare_sift100m.sh
 ./bin/build_index sift100m hybrid_6_20 6 20
 
 # Run single-filter queries
-./bin/run_query sift100m hybrid_6_20 10 20 30 40 50 60 70 80 90 100 150 200 250 300 350 400 450 500
+./bin/run_query sift100m hybrid_6_20 10 20 30 40 50 60 70 80 90 100 150 200 250 300 350 400 450 500 750 1000
 # Run double-filter queries
 ./bin/run_query sift100m-double hybrid_6_20 1 2 3 4 5 7 10 15 20 25 30 40 50 70 100

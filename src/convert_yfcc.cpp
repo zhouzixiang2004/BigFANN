@@ -197,7 +197,7 @@ int main() {
     vector_dataset<int> gt(
         (DATA_DIR + "yfcc100M/GT.public.ibin").c_str());
     
-    vector_dataset<int> gt_k100(
+    /*vector_dataset<int> gt_k100(
         (DATA_DIR + "yfcc100M/k100_GT.ibin").c_str());
     pair<int, float>* ung_gt = new pair<int, float>[gt_k100.num * gt_k100.dim];
     for (size_t i = 0; i < gt_k100.num; i++) {
@@ -207,7 +207,7 @@ int main() {
     }
     ofstream fout(DATA_DIR + "yfcc100M/k100_gt_ung.fbin", ios::binary);
     fout.write(reinterpret_cast<const char*>(ung_gt),
-        gt_k100.num * gt_k100.dim * sizeof(pair<int, float>));
+        gt_k100.num * gt_k100.dim * sizeof(pair<int, float>));*/
 
     // ------------------------------------
     // Process the subsets

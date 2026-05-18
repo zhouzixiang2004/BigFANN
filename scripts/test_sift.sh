@@ -30,6 +30,6 @@ fi
 ./bin/build_index sift hybrid_32_1 32 1
 
 # Run single-filter queries
-./bin/run_query sift hybrid_32_1 10 20 30 40 50 60 70 80 90 100
+./bin/run_query sift hybrid_32_1 10 20 30 40 50 60 70 80 90 100 150 200 250 300 350 400 450 500 750 1000
 # Run double-filter queries
 ./bin/run_query sift-double hybrid_32_1 1 2 3 4 5 7 10 15 20 25 30 40 50 70 100

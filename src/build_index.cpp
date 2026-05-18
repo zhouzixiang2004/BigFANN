@@ -222,7 +222,7 @@ int main(int argc, char *argv[]) {
         }
         else if (dataset_name == "arxiv") {
             P.BIG_CUTOFF = 0;
-            P.CLUSTER_SIZE = 256;
+            P.CLUSTER_SIZE = 100000; // IVF index is unused
             P.BUILD_BEAM_WIDTH = 200;
             P.GRAPH_DEGREE = {{1e7,32}};
             P.SHARED_DEGREE = 1;

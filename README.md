@@ -1,6 +1,8 @@
 # BigFANN
 
-BigFANN is a C++ framework for filtered approximate nearest neighbor search (FANNS) with label filters. It implements the techniques described in the accompanying paper "**Harmonizing Efficiency and Accuracy in Filtered Vector Search**", including hybrid IVF-graph indexing and join-free multi-filter search.
+BigFANN is a C++ framework for filtered approximate nearest neighbor search (FANNS) with label filters. 
+It implements the techniques described in our VLDB'26 paper [Harmonizing Efficiency and Accuracy in Filtered Vector Search](https://chenxuhao.github.io/docs/vldb-2026.pdf), 
+including hybrid IVF-graph indexing and join-free multi-filter search.
 
 # Quickstart
 
@@ -49,3 +51,20 @@ To evaluate other datasets, adjust the dataset paths and parameters in `build_in
 BigFANN uses OpenMP and parallel primitives from [ParlayLib](https://cmuparlay.github.io/parlaylib/).
 
 Our implementation also builds on ideas and infrastructure from [ParlayIVF²](https://github.com/cmuparlay/ParlayANN/tree/filter).
+
+# Citation
+
+```
+@article{BigFANN,
+  title={{Harmonizing Efficiency and Accuracy in Filtered Vector Search}},
+  author={Zixiang Zhou and Xuhao Chen},
+  year={2026},
+  pages = {},
+  journal = {PVLDB},
+  issue_date = {August 2026},
+  volume = {19},
+  number = {9},
+  month = Aug,
+  publisher = {VLDB Endowment},
+}
+```

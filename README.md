@@ -56,10 +56,10 @@ Our implementation also builds on ideas and infrastructure from [ParlayIVF²](ht
 
 ```
 @article{BigFANN,
-  title={{Harmonizing Efficiency and Accuracy in Filtered Vector Search}},
-  author={Zixiang Zhou and Xuhao Chen},
-  year={2026},
-  pages = {},
+  title = {Harmonizing Efficiency and Accuracy in Filtered Vector Search},
+  author = {Zixiang Zhou and Xuhao Chen},
+  year = {2026},
+  pages = {2059 - 2072},
   journal = {PVLDB},
   issue_date = {August 2026},
   volume = {19},
